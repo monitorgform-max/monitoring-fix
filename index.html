@@ -209,8 +209,8 @@ header {
   background:#0d0d14;
   z-index:998;
 }
-.btn.active { background:red; }
-.btn:hover { transform:scale(1.08); }
+.week-btn.active { background:red; }
+.week-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
 /* -------------------------------------------------------
    DISPLAY & CARDS - GRADIENT PASTEL & GLOW PER TIPE
 ------------------------------------------------------- */
@@ -347,7 +347,7 @@ function drawMatrix() {
     drops[i]++;
   }
 }
-setInterval(drawMatrix, 20);
+setInterval(drawMatrix, 60);
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -555,6 +555,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
