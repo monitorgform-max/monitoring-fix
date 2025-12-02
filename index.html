@@ -25,7 +25,7 @@ body {
 /* -------------------------------------------------------
    MATRIX BACKGROUND
 ------------------------------------------------------- */
-#onboardCanvas {
+#matrixCanvas {
   position:fixed;
   top:0; left:0;
   width:100%;
@@ -280,7 +280,7 @@ header {
 <body>
 
 <!-- MATRIX BACKGROUND -->
-<canvas id="onboardCanvas"></canvas>
+<canvas id="matrixCanvas"></canvas>
 
 <!-- LOADER -->
 <div id="loaderScreen">
@@ -302,7 +302,6 @@ header {
   <div class="button-row">
     <button class="btn" id="btnWeekly">Weekly</button>
     <button class="btn" id="btnMonthly">Monthly</button>
-    <button class="btn" id="btnExport">Export</button>
     <button class="btn" id="btnRefresh">Refresh</button>
     <div class="by-el">by EL</div>
   </div>
@@ -322,7 +321,7 @@ header {
 /* -------------------------------------------------------
    MATRIX ANIMATION
 ------------------------------------------------------- */
-const canvas = document.getElementById("onboardCanvas");
+const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("3d");
 
 canvas.width = window.innerWidth;
@@ -347,7 +346,7 @@ function drawMatrix() {
     drops[i]++;
   }
 }
-setInterval(drawMatrix, 30);
+setInterval(drawMatrix, 40);
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -356,24 +355,23 @@ setInterval(drawMatrix, 30);
 /* === STATE === */
 const btnWeekly=document.getElementById("btnWeekly");
 const btnMonthly=document.getElementById("btnMonthly");
-const btnExport=document.getElementById("btnExport");
 const btnRefresh=document.getElementById("btnRefresh");
 const weekButtons=document.getElementById("weekButtons");
 const weekBtns=document.querySelectorAll(".week-btn");
 const dataDisplay=document.getElementById("dataDisplay");
 
-function resetMainButtons(){[btnWeekly,btnMonthly,btnExport,btnRefresh].forEach(b=>b.classList.remove("active"));}
+function resetMainButtons(){[btnWeekly,btnMonthly,btnRefresh].forEach(b=>b.classList.remove("active"));}
 function resetWeekButtons(){weekBtns.forEach(b=>b.classList.remove("active"));}
 
 /* === URL === */
 const MASTER_WEEKLY_CSV="Data Mesin.csv";
 const MASTER_MONTHLY_CSV="Data Mesin Monthly.csv";
 
-const WEEKLY_SHEET_ID="19FeEccnYkZVAZo0lO-erbgLtJDAalG3IzwaiLympdck";
-const WEEKLY_SHEET_NAME="Form Responses 1";
-const WEEKLY_SHEET_URL=`https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
+const WEEKLY_SHEET_ID = "1lhRlY4P7Zj0XOeMDtBMBv_JAC56E_gXa5zoj3VDP90w";
+const WEEKLY_SHEET_NAME = "Form Responses 1";
+const WEEKLY_SHEET_URL = `https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
 
-const MONTHLY_FORM_URL="https://opensheet.elk.sh/134suRLzzkA8d7G_I9k535R-hlA_IpYvV67MgTQ8HlKw/Form%20Responses%201";
+const MONTHLY_FORM_URL = "https://opensheet.elk.sh/1HOZ9WXSxr2W-iiaaM2ysYfMwiIIS48tH6UPm-o0d4vY/Form%20Responses%201";
 
 /* === DATA === */
 let weeklyRows=[], monthlyRows=[], masterWeekly=[], masterMonthly=[];
@@ -556,6 +554,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
