@@ -87,16 +87,16 @@ body {
 
 .cyber-text {
   margin-top:22px;
-  font-size:24px;
+  font-size:48px;
   color:#0ff;
-  text-shadow:0 0 12px #0ff, 0 0 24px #0ff;
+  text-shadow:0 0 24px #0ff, 0 0 48px #0ff;
   animation: neonBlink 1.2s infinite;
 }
 .cyber-sub {
   margin-top:12px;
-  font-size:17px;
+  font-size:24px;
   color:#f0f;
-  text-shadow:0 0 8px #f0f, 0 0 18px #f0f;
+  text-shadow:0 0 15px #f0f, 0 0 25px #f0f;
 }
 @keyframes neonBlink {
   0% {opacity:1;}
@@ -118,16 +118,16 @@ body {
   z-index:99998;
 }
 #photoScreen img {
-  width:260px;
-  border-radius:12px;
-  box-shadow:0 0 25px #0ff;
+  width:800px;
+  border-radius:35px;
+  box-shadow:0 0 75px #0ff;
 }
 .cyber-title {
   margin-top:14px;
-  font-size:26px;
+  font-size:48px;
   font-weight:bold;
   color:#0ff;
-  text-shadow:0 0 12px #0ff, 0 0 25px #0ff, 0 0 45px #0ff;
+  text-shadow:0 0 24px #0ff, 0 0 50px #0ff, 0 0 90px #0ff;
   animation: neonBlink 1.5s infinite;
 }
 
@@ -292,7 +292,7 @@ header {
    MATRIX ANIMATION
 ------------------------------------------------------- */
 const canvas = document.getElementById("onboardCanvas");
-const ctx = canvas.getContext("8d");
+const ctx = canvas.getContext("3d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -525,4 +525,5 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
