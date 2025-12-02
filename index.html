@@ -253,6 +253,24 @@ header {
   padding: 8px 10px;
   font-size: 13px;
 }
+   
+/* pastikan wrap dataDisplay scrollable tapi tetap di bawah header */
+.wrap {
+  padding-top: 150px; /* header + button-row + week-row total tinggi */
+  padding-left: 16px;
+  padding-right: 16px;
+  display: none;
+}
+
+/* tetap scrollable */
+#dataDisplay {
+  overflow-y: auto;
+  max-height: calc(100vh - 150px); /* sesuaikan sama padding-top */
+  margin-top: 0; /* hapus margin-top lama */
+  padding-bottom: 20px;
+  position: relative; /* agar z-index bisa berfungsi */
+  z-index: 1; /* di bawah header dan button */
+}
 
 /* -------------------------------------------------------
    MATRIX FX SCRIPT AREA
@@ -538,6 +556,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
