@@ -211,34 +211,47 @@ header {
 }
 
 /* -------------------------------------------------------
-   DISPLAY & CARDS
+   DISPLAY & CARDS - GRADIENT PASTEL & GLOW PER TIPE
 ------------------------------------------------------- */
-#dataDisplay {
-  margin-top:150px;
-  overflow-y:auto;
-  max-height:calc(100vh - 150px);
-  padding-bottom:20px;
+.card, .monthly-card {
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 14px;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  color: #000; /* teks hitam */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  background: linear-gradient(135deg, #fdf6e3, #e0f7fa); /* default gradient */
 }
 
-.card, .monthly-card {
-  background:#202030;
-  border-radius:8px;
-  padding:6px;
-  margin-bottom:8px;
+/* sudah input - gradient pastel hijau/blue */
+.card.sudah, .monthly-card.sudah {
+  background: linear-gradient(135deg, #d0f0c0, #a0e8af);
+}
+
+/* belum input - gradient pastel kuning/orange */
+.card.belum, .monthly-card.belum {
+  background: linear-gradient(135deg, #fffacd, #ffe4b3);
+}
+
+/* hover efek mewah untuk semua */
+.card:hover, .monthly-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.35), 0 0 15px rgba(255,255,255,0.6);
+  filter: brightness(1.05);
 }
 
 /* grid */
 .week-grid {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-/* items */
+/* item */
 .item {
-  border-bottom:1px solid #555;
-  padding:6px 4px;
-  font-size:13px;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  padding: 8px 10px;
+  font-size: 13px;
 }
 
 /* -------------------------------------------------------
@@ -525,6 +538,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
