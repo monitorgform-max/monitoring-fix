@@ -326,17 +326,19 @@ header {
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+// Set canvas fullscreen awal
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
 const letters = "EL";
-const fontSize = 20;
-const columns = Math.floor(canvas.width / fontSize * 0.7);
-const drops = Array(columns).fill(1);
+const fontSize = 20; // lebih besar biar jelas
+const columns = Math.floor(canvas.width / fontSize * 0.7); // horizontal spacing lebih lega
+const drops = Array(columns).fill(0).map(() => Math.random() * 15); // vertical random start
 let hue = 0;
 
 function drawMatrix() {
-  // 1. Background trail gelap tipis (tanpa shadow)
+  // 1. Background trail gelap tipis
   ctx.shadowBlur = 0;
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -344,37 +346,41 @@ function drawMatrix() {
   // 2. Update warna huruf RGB neon
   hue = (hue + 1) % 360;
   const color = `hsl(${hue},100%,50%)`;
-  
-  // 3. Layer glow huruf (multi-layer)
+
   for (let i = 0; i < drops.length; i++) {
     const text = letters.charAt(Math.floor(Math.random() * letters.length));
     const x = i * fontSize;
     const y = drops[i] * fontSize;
 
-    // Layer tipis glow
+    // Multi-layer glow huruf
     ctx.fillStyle = color;
+
+    // Layer tipis
     ctx.shadowColor = color;
     ctx.shadowBlur = 6;
     ctx.fillText(text, x, y);
 
-    // Layer medium glow
+    // Layer medium
     ctx.shadowBlur = 14;
     ctx.fillText(text, x, y);
 
-    // Layer tebal glow
+    // Layer tebal
     ctx.shadowBlur = 28;
     ctx.fillText(text, x, y);
 
-    // Reset drop ke atas kalau sudah habis
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = Math.random() * 10; // posisi awal random;
+    // Update vertical drop (renggang)
+    drops[i] += 0.4 + Math.random() * 0.3; // variasi kecepatan tiap huruf
 
-    // Turun pelan
-    drops[i] += 0.4;
+    // Reset ke atas dengan posisi acak
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = Math.random() * 10;
+    }
   }
 }
 
 setInterval(drawMatrix, 60);
 
+// Resize handling
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -587,6 +593,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
