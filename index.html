@@ -330,8 +330,8 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const letters = "EL";
-const fontSize = 18;
-const columns = Math.floor(canvas.width / fontSize);
+const fontSize = 20;
+const columns = Math.floor(canvas.width / fontSize * 0.7);
 const drops = Array(columns).fill(1);
 let hue = 0;
 
@@ -366,7 +366,7 @@ function drawMatrix() {
     ctx.fillText(text, x, y);
 
     // Reset drop ke atas kalau sudah habis
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = Math.random() * 10; // posisi awal random;
 
     // Turun pelan
     drops[i] += 0.4;
@@ -587,6 +587,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
