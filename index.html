@@ -25,7 +25,7 @@ body {
 /* -------------------------------------------------------
    MATRIX BACKGROUND
 ------------------------------------------------------- */
-#matrixCanvas {
+#onboardCanvas {
   position:fixed;
   top:0; left:0;
   width:100%;
@@ -249,7 +249,7 @@ header {
 <body>
 
 <!-- MATRIX BACKGROUND -->
-<canvas id="matrixCanvas"></canvas>
+<canvas id="onboardCanvas"></canvas>
 
 <!-- LOADER -->
 <div id="loaderScreen">
@@ -260,7 +260,7 @@ header {
 
 <!-- PHOTO SCREEN -->
 <div id="photoScreen">
-  <img src="https://i.ibb.co/PvGh1tnD/upscalemedia-transformed.jpg">
+  <img src="https://raw.githubusercontent.com/monitorgform-max/monitoring-fix/main/upscalemedia-transformed.jpeg">
   <div class="cyber-title glitch">UG ARTA BATAM</div>
 </div>
 
@@ -291,8 +291,8 @@ header {
 /* -------------------------------------------------------
    MATRIX ANIMATION
 ------------------------------------------------------- */
-const canvas = document.getElementById("matrixCanvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("onboardCanvas");
+const ctx = canvas.getContext("8d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -316,7 +316,7 @@ function drawMatrix() {
     drops[i]++;
   }
 }
-setInterval(drawMatrix, 40);
+setInterval(drawMatrix, 30);
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -525,3 +525,4 @@ setTimeout(()=>{
 
 </body>
 </html>
+
