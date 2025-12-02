@@ -11,16 +11,50 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
-/* ==================== GLOBAL BASE ==================== */
-body { 
-  font-family: Arial, sans-serif; 
-  margin:0; 
-  background:#0d0d14; 
-  color:#eee; 
+/* -------------------------------------------------------
+   GLOBAL & BACKGROUND
+------------------------------------------------------- */
+body {
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#0a0a12;
+  color:#eee;
   overflow:hidden;
 }
 
-/* ==================== CYBERPUNK LOADER ==================== */
+/* -------------------------------------------------------
+   MATRIX BACKGROUND
+------------------------------------------------------- */
+#matrixCanvas {
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  opacity:0.25;
+}
+
+/* -------------------------------------------------------
+   GLITCH EFFECT
+------------------------------------------------------- */
+.glitch {
+  position: relative;
+  color: #0ff;
+  font-weight: bold;
+  animation: glitch 1.5s infinite;
+  text-shadow: 0 0 5px #0ff;
+}
+@keyframes glitch {
+  0% { text-shadow: 2px 0 red, -2px 0 blue; }
+  20% { text-shadow: -2px 0 red, 2px 0 blue; }
+  40% { text-shadow: 2px 0 red, -2px 0 blue; }
+  60% { text-shadow: -2px 0 red, 2px 0 blue; }
+  100% { text-shadow: 2px 0 red, -2px 0 blue; }
+}
+
+/* -------------------------------------------------------
+   LOADER SCREEN
+------------------------------------------------------- */
 #loaderScreen {
   position:fixed;
   top:0; left:0; right:0; bottom:0;
@@ -33,27 +67,46 @@ body {
   text-align:center;
 }
 
-.cyber-text {
-  font-size:24px;
-  color:#0ff;
-  text-shadow:0 0 8px #0ff, 0 0 18px #0ff;
-  animation: neonBlink 1.2s infinite;
+/* spinner neon */
+.spinner {
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  border:5px solid #0ff;
+  border-top-color:transparent;
+  animation: spin 0.9s linear infinite, glow 1.5s infinite;
+}
+@keyframes spin {
+  to { transform:rotate(360deg); }
+}
+@keyframes glow {
+  0% { box-shadow:0 0 10px #0ff; }
+  50% { box-shadow:0 0 25px #0ff; }
+  100% { box-shadow:0 0 10px #0ff; }
 }
 
+.cyber-text {
+  margin-top:22px;
+  font-size:24px;
+  color:#0ff;
+  text-shadow:0 0 12px #0ff, 0 0 24px #0ff;
+  animation: neonBlink 1.2s infinite;
+}
 .cyber-sub {
   margin-top:12px;
-  font-size:16px;
+  font-size:17px;
   color:#f0f;
   text-shadow:0 0 8px #f0f, 0 0 18px #f0f;
 }
-
 @keyframes neonBlink {
   0% {opacity:1;}
   50% {opacity:0.4;}
   100% {opacity:1;}
 }
 
-/* ==================== PHOTO SCREEN ==================== */
+/* -------------------------------------------------------
+   PHOTO SCREEN
+------------------------------------------------------- */
 #photoScreen {
   position:fixed;
   top:0; left:0; right:0; bottom:0;
@@ -64,79 +117,71 @@ body {
   align-items:center;
   z-index:99998;
 }
-
 #photoScreen img {
   width:260px;
   border-radius:12px;
   box-shadow:0 0 25px #0ff;
 }
-
 .cyber-title {
   margin-top:14px;
   font-size:26px;
   font-weight:bold;
   color:#0ff;
-  text-shadow:0 0 12px #0ff, 0 0 25px #0ff, 0 0 35px #0ff;
+  text-shadow:0 0 12px #0ff, 0 0 25px #0ff, 0 0 45px #0ff;
   animation: neonBlink 1.5s infinite;
 }
 
-/* ==================== HEADER ==================== */
-header { 
-  background:#1e5bb8; 
-  color:white; 
-  padding:15px; 
-  text-align:center; 
-  font-size:20px; 
-  font-weight:bold; 
-  position:fixed; 
-  top:0; left:0; right:0; 
-  z-index:1000; 
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-header:hover { 
-  transform: translateY(-2px) scale(1.03); 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+/* -------------------------------------------------------
+   HEADER
+------------------------------------------------------- */
+header {
+  background:#1e5bb8;
+  color:white;
+  padding:15px;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:1000;
 }
 
 .wrap { 
   padding:16px; 
   padding-top:90px; 
-  display:none; /* DIMUNCULKAN SETELAH SCREEN AWAL */
+  display:none;
 }
 
-/* ==================== BUTTON AREA ==================== */
-.button-row { 
-  display:flex; 
-  gap:10px; 
-  margin-bottom:12px; 
-  position:fixed; 
-  top:60px; 
-  left:0; right:0; 
-  padding:0 16px; 
-  background:#0d0d14; 
-  z-index:999; 
+/* -------------------------------------------------------
+   BUTTONS
+------------------------------------------------------- */
+.button-row {
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
+  position:fixed;
+  top:60px; left:0; right:0;
+  padding:0 16px;
+  background:#0d0d14;
+  z-index:999;
 }
-
-.btn { 
-  padding:8px 16px; 
-  border:none; 
-  border-radius:6px; 
-  background:#1e5bb8; 
-  color:white; 
-  cursor:pointer; 
-  font-weight:bold; 
-  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+.btn {
+  padding:8px 16px;
+  border:none;
+  border-radius:6px;
+  background:#1e5bb8;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s;
 }
 .btn.active { background:red; }
-.btn:hover { 
-  transform: translateY(-2px) scale(1.08); 
-  box-shadow:0 4px 12px rgba(0,0,0,0.15); 
-}
+.btn:hover { transform:scale(1.08); }
 
-/* ---- BY EL TEXT ---- */
+/* by EL neon rgb */
 .by-el {
   align-self:center;
-  margin-left:8px;
+  margin-left:5px;
   font-weight:bold;
   font-size:14px;
   background: linear-gradient(90deg,#f0f,#0ff,#0f0,#ff0,#f00);
@@ -144,144 +189,93 @@ header:hover {
   -webkit-text-fill-color:transparent;
   animation: rgbMove 2s infinite linear;
 }
-@keyframes rgbMove {
+@keyframes rgbMove { 
   0% {filter:hue-rotate(0deg);}
   100% {filter:hue-rotate(360deg);}
 }
 
-/* ==================== WEEK ROW ==================== */
-.week-row { 
-  display:flex; 
-  gap:8px; 
-  margin-bottom:12px; 
-  display:none; 
-  position:fixed; 
-  top:105px; 
-  left:0; right:0; 
-  padding:0 16px; 
-  background:#0d0d14; 
-  z-index:998; 
-}
-.week-btn { 
-  padding:6px 12px; 
-  border:none; 
-  border-radius:6px; 
-  background:#666; 
-  color:white; 
-  cursor:pointer; 
-  font-weight:bold; 
-  transition: transform 0.2s ease, box-shadow 0.2s ease; 
-}
-.week-btn.active { background:red; }
-.week-btn:hover { 
-  transform: translateY(-2px) scale(1.08); 
-  box-shadow:0 4px 12px rgba(0,0,0,0.15); 
+/* -------------------------------------------------------
+   WEEK BUTTONS
+------------------------------------------------------- */
+.week-row {
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+  display:none;
+  position:fixed;
+  top:105px;
+  left:0; right:0;
+  padding:0 16px;
+  background:#0d0d14;
+  z-index:998;
 }
 
-/* ==================== DISPLAY ==================== */
-#dataDisplay { 
-  margin-top:150px; 
-  overflow-y:auto; 
-  max-height:calc(100vh - 150px); 
-  padding-bottom:20px; 
+/* -------------------------------------------------------
+   DISPLAY & CARDS
+------------------------------------------------------- */
+#dataDisplay {
+  margin-top:150px;
+  overflow-y:auto;
+  max-height:calc(100vh - 150px);
+  padding-bottom:20px;
 }
 
-/* ==================== CARDS ==================== */
-.card, .monthly-card { 
-  border-radius:8px; 
-  padding:6px; 
+.card, .monthly-card {
   background:#202030;
-  transition: transform 0.25s ease, box-shadow 0.25s ease; 
-}
-.card:hover, .monthly-card:hover { 
-  transform: translateY(-3px) scale(1.03); 
-  box-shadow:0 6px 16px rgba(0,0,0,0.18); 
+  border-radius:8px;
+  padding:6px;
+  margin-bottom:8px;
 }
 
-.card.sudah { background:#1e3a2d; }
-.card.belum { background:#3a1e1e; }
-.monthly-card.sudah { background:#2e1f3d; }
-.monthly-card.belum { background:#3a2a4f; }
-
-.item { 
-  border-bottom:1px solid #555; 
-  padding:6px 4px; 
-  font-size:13px; 
-  position:relative; 
-  cursor:default; 
-  transition: background 0.12s, padding-left 0.12s; 
-}
-.item:hover { 
-  background: rgba(255,255,255,0.05); 
-  padding-left:4px; 
+/* grid */
+.week-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
 }
 
-/* Tooltip */
-.item .tooltip{
-  visibility:hidden; opacity:0; 
-  transition:opacity .12s; 
-  position:absolute;
-  bottom:125%; 
-  left:50%; 
-  transform:translateX(-50%); 
-  white-space:nowrap; 
-  padding:4px 6px; 
-  color:#fff; 
-  border-radius:4px; 
-  font-size:11px; 
-  z-index:10;
-}
-.item:hover .tooltip{ visibility:visible; opacity:1; }
-
-.week-grid { 
-  display:grid; 
-  grid-template-columns:repeat(4,1fr); 
-  gap:12px; 
-  margin-bottom:12px; 
+/* items */
+.item {
+  border-bottom:1px solid #555;
+  padding:6px 4px;
+  font-size:13px;
 }
 
-/* chart wrapper */
-.chart-wrap { 
-  width:400px; height:360px; 
-  margin:18px auto; 
-  position:relative; 
-  text-align:center; 
-  background:#202030; 
-  padding:10px; 
-  border-radius:8px; 
-}
+/* -------------------------------------------------------
+   MATRIX FX SCRIPT AREA
+------------------------------------------------------- */
 </style>
 </head>
 <body>
 
-<!-- ==================== LOADER SCREEN ==================== -->
+<!-- MATRIX BACKGROUND -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- LOADER -->
 <div id="loaderScreen">
-  <div class="cyber-text">LOADING... PLEASE WAIT...!!</div>
+  <div class="spinner"></div>
+  <div class="cyber-text glitch">LOADING... PLEASE WAIT...!!</div>
   <div class="cyber-sub">Alloh bersama orang-orang yang sabar</div>
 </div>
 
-<!-- ==================== PHOTO SCREEN ==================== -->
+<!-- PHOTO SCREEN -->
 <div id="photoScreen">
-  <img src="https://drive.google.com/uc?export=view&id=1VwnpKeIYTyaqcOqYatJS2vbJ0yHh10mu">
-  <div class="cyber-title">UG ARTA BATAM</div>
+  <img src="https://i.ibb.co/PvGh1tnD/upscalemedia-transformed.jpg">
+  <div class="cyber-title glitch">UG ARTA BATAM</div>
 </div>
 
-<header>MONITORING GFORM</header>
+<header class="glitch">MONITORING GFORM</header>
 
 <div class="wrap">
 
-  <!-- Buttons -->
   <div class="button-row">
     <button class="btn" id="btnWeekly">Weekly</button>
     <button class="btn" id="btnMonthly">Monthly</button>
     <button class="btn" id="btnExport">Export</button>
     <button class="btn" id="btnRefresh">Refresh</button>
-
-    <!-- BY EL neon -->
     <div class="by-el">by EL</div>
   </div>
 
-  <!-- Weekly week buttons -->
   <div class="week-row" id="weekButtons">
     <button class="week-btn" data-week="1">W1</button>
     <button class="week-btn" data-week="2">W2</button>
@@ -289,141 +283,155 @@ header:hover {
     <button class="week-btn" data-week="4">W4</button>
   </div>
 
-  <!-- Data Display -->
   <div id="dataDisplay"></div>
 
 </div>
 
 <script>
+/* -------------------------------------------------------
+   MATRIX ANIMATION
+------------------------------------------------------- */
+const canvas = document.getElementById("matrixCanvas");
+const ctx = canvas.getContext("2d");
 
-/* ==================== ALL SCRIPT ORIGINAL (tidak diubah) ==================== */
-/* Hanya UI yang berubah, logic tetap sama */
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-/* ------ State ------ */
-const btnWeekly = document.getElementById("btnWeekly");
-const btnMonthly = document.getElementById("btnMonthly");
-const btnExport = document.getElementById("btnExport");
-const btnRefresh = document.getElementById("btnRefresh");
-const weekButtons = document.getElementById("weekButtons");
-const weekBtns = document.querySelectorAll(".week-btn");
-const dataDisplay = document.getElementById("dataDisplay");
+const letters = "01";
+const fontSize = 18;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
 
-function resetMainButtons() {
-  [btnWeekly, btnMonthly, btnExport, btnRefresh].forEach(b=>b.classList.remove("active"));
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "#0f0";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i=0;i<drops.length;i++){
+    const text = letters.charAt(Math.floor(Math.random()*letters.length));
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
+    drops[i]++;
+  }
 }
-function resetWeekButtons() { weekBtns.forEach(b=>b.classList.remove("active")); }
+setInterval(drawMatrix, 40);
 
-/* ------ URLs ------ */
-const MASTER_WEEKLY_CSV = "Data Mesin.csv"; 
-const MASTER_MONTHLY_CSV = "Data Mesin Monthly.csv"; 
+/* -------------------------------------------------------
+   ORIGINAL SCRIPT TIDAK DIUBAH
+------------------------------------------------------- */
 
-const WEEKLY_SHEET_ID = "19FeEccnYkZVAZo0lO-erbgLtJDAalG3IzwaiLympdck";
-const WEEKLY_SHEET_NAME = "Form Responses 1";
-const WEEKLY_SHEET_URL = `https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
+/* === STATE === */
+const btnWeekly=document.getElementById("btnWeekly");
+const btnMonthly=document.getElementById("btnMonthly");
+const btnExport=document.getElementById("btnExport");
+const btnRefresh=document.getElementById("btnRefresh");
+const weekButtons=document.getElementById("weekButtons");
+const weekBtns=document.querySelectorAll(".week-btn");
+const dataDisplay=document.getElementById("dataDisplay");
 
-const MONTHLY_FORM_URL = "https://opensheet.elk.sh/134suRLzzkA8d7G_I9k535R-hlA_IpYvV67MgTQ8HlKw/Form%20Responses%201";
+function resetMainButtons(){[btnWeekly,btnMonthly,btnExport,btnRefresh].forEach(b=>b.classList.remove("active"));}
+function resetWeekButtons(){weekBtns.forEach(b=>b.classList.remove("active"));}
 
-/* ------ Data ------ */
+/* === URL === */
+const MASTER_WEEKLY_CSV="Data Mesin.csv";
+const MASTER_MONTHLY_CSV="Data Mesin Monthly.csv";
+
+const WEEKLY_SHEET_ID="19FeEccnYkZVAZo0lO-erbgLtJDAalG3IzwaiLympdck";
+const WEEKLY_SHEET_NAME="Form Responses 1";
+const WEEKLY_SHEET_URL=`https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
+
+const MONTHLY_FORM_URL="https://opensheet.elk.sh/134suRLzzkA8d7G_I9k535R-hlA_IpYvV67MgTQ8HlKw/Form%20Responses%201";
+
+/* === DATA === */
 let weeklyRows=[], monthlyRows=[], masterWeekly=[], masterMonthly=[];
 
-/* ------ Utils ------ */
-function safe(v){ return v==null?"":String(v).trim(); }
-async function loadCSV(url){ 
-  return new Promise(resolve=>{
-    Papa.parse(url,{download:true,header:true,skipEmptyLines:true,
-      complete:r=>resolve(r.data),error:()=>resolve([])});
-  }); 
-}
+function safe(v){return v==null?"":String(v).trim();}
+async function loadCSV(url){return new Promise(resolve=>{Papa.parse(url,{download:true,header:true,skipEmptyLines:true,complete:r=>resolve(r.data),error:()=>resolve([])});});}
 
-/* ------ Load all data ------ */
+/* === LOAD ALL === */
 async function loadAll(){
-  masterWeekly = await loadCSV(MASTER_WEEKLY_CSV);
-  masterMonthly = await loadCSV(MASTER_MONTHLY_CSV);
-  weeklyRows = await fetch(WEEKLY_SHEET_URL).then(r=>r.json()).catch(()=>[]);
-  monthlyRows = await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
+  masterWeekly=await loadCSV(MASTER_WEEKLY_CSV);
+  masterMonthly=await loadCSV(MASTER_MONTHLY_CSV);
+  weeklyRows=await fetch(WEEKLY_SHEET_URL).then(r=>r.json()).catch(()=>[]);
+  monthlyRows=await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
 }
 
-/* ------ Render Weekly ------ */
+/* === RENDER WEEKLY === */
 function renderWeekly(weekNumber){
-  const targetWeek = `Week ${weekNumber}`;
-  const list = masterWeekly.filter(m => safe(m.WEEK) === targetWeek);
-  const sudahList = [], belumList = [];
+  const targetWeek=`Week ${weekNumber}`;
+  const list=masterWeekly.filter(m=>safe(m.WEEK)===targetWeek);
+  const sudahList=[], belumList=[];
 
   list.forEach(m=>{
-    const id = safe(m["ID Mesin"]);
-    const match = weeklyRows.find(r => safe(r["ID Mesin"]) === id && safe(r["WEEK"]) === targetWeek);
-    if(match) sudahList.push({...m, Timestamp:safe(match.Timestamp)});
+    const id=safe(m["ID Mesin"]);
+    const match=weeklyRows.find(r=>safe(r["ID Mesin"])===id && safe(r["WEEK"])===targetWeek);
+    if(match) sudahList.push({...m,Timestamp:safe(match.Timestamp)});
     else belumList.push(m);
   });
 
   function chunkInto(arr,n=4){
-    const out = Array.from({length:n},()=>[]);
-    let idx=0, base=Math.floor(arr.length/n), rem=arr.length%n;
+    const out=Array.from({length:n},()=>[]);
+    let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
     for(let i=0;i<n;i++){
-      const size = base+(i<rem?1:0);
-      out[i]=arr.slice(idx, idx+size);
+      const size=base+(i<rem?1:0);
+      out[i]=arr.slice(idx,idx+size);
       idx+=size;
     }
     return out;
   }
 
   let html=`<h3>Sudah Input (${sudahList.length} mesin)</h3>`;
-  const colSud = chunkInto(sudahList);
+  const colSud=chunkInto(sudahList);
 
   html+=`<div class="week-grid">`+
-    colSud.map(col=>`
+  colSud.map(col=>`
     <div class="card sudah">
-        ${col.map(m=>`
-        <div class="item">
-            <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
-            ${safe(m["Nama Lokasi"])}<br>
-            <small>${m.Timestamp}</small>
-            <span class="tooltip">Timestamp: ${m.Timestamp}</span>
-        </div>`).join('')}
-    </div>`).join('')
-  +`</div>`;
+      ${col.map(m=>`
+      <div class="item">
+        <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
+        ${safe(m["Nama Lokasi"])}<br>
+        <small>${m.Timestamp}</small>
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
 
   html+=`<h3>Belum Input (${belumList.length} mesin)</h3>`;
-  const colBel = chunkInto(belumList);
+  const colBel=chunkInto(belumList);
 
   html+=`<div class="week-grid">`+
-    colBel.map(col=>`
+  colBel.map(col=>`
     <div class="card belum">
-        ${col.map(m=>`
-        <div class="item">
-            <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
-            ${safe(m["Nama Lokasi"])}
-            <span class="tooltip">Belum input</span>
-        </div>`).join('')}
-    </div>`).join('')
-  +`</div>`;
+      ${col.map(m=>`
+      <div class="item">
+        <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
+        ${safe(m["Nama Lokasi"])}
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
 
-  dataDisplay.innerHTML = html;
+  dataDisplay.innerHTML=html;
 }
 
-/* ------ Render Monthly ------ */
+/* === RENDER MONTHLY === */
 function renderMonthly(){
   const sudah=[], belum=[];
-
   masterMonthly.forEach(m=>{
-    const id = safe(m["ID Mesin"]);
-    const nama = safe(m["Nama Lokasi"]) || "—";
-    const sektor = safe(m.Sektor || m.SEKTOR) || "—";
-
-    const match = monthlyRows.find(r => safe(r["ID Mesin"]) === id);
-
+    const id=safe(m["ID Mesin"]);
+    const nama=safe(m["Nama Lokasi"])||"—";
+    const sektor=safe(m.Sektor||m.SEKTOR)||"—";
+    const match=monthlyRows.find(r=>safe(r["ID Mesin"])===id);
     if(match){
-      let tsRaw = safe(match.Timestamp);
-      let ts = tsRaw;
-      const d = new Date(tsRaw);
-      if(!isNaN(d)) ts = d.toLocaleString("id-ID",{hour12:false});
+      let tsRaw=safe(match.Timestamp);
+      let ts=tsRaw;
+      const d=new Date(tsRaw);
+      if(!isNaN(d)) ts=d.toLocaleString("id-ID",{hour12:false});
       sudah.push({id,nama,sektor,ts});
     } else belum.push({id,nama,sektor});
   });
 
   function chunk(arr,n=4){
-    const out = Array.from({length:n},()=>[]);
-    let idx=0; const base=Math.floor(arr.length/n), rem=arr.length%n;
+    const out=Array.from({length:n},()=>[]);
+    let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
     for(let i=0;i<n;i++){
       const size=base+(i<rem?1:0);
       out[i]=arr.slice(idx,idx+size);
@@ -434,73 +442,61 @@ function renderMonthly(){
 
   let html=`<h3>Sudah Input (${sudah.length} mesin)</h3>`;
   html+=`<div class="week-grid">`+
-      chunk(sudah).map(col=>`
-        <div class="monthly-card sudah">
-          ${col.map(c=>`
-            <div class="item">
-              <strong>${c.id}</strong> — ${c.sektor}<br>
-              ${c.nama}<br>
-              <small>${c.ts}</small>
-              <span class="tooltip">Timestamp: ${c.ts}</span>
-            </div>`).join("")}
-        </div>`).join("")
-    +`</div>`;
+  chunk(sudah).map(col=>`
+    <div class="monthly-card sudah">
+      ${col.map(c=>`
+      <div class="item">
+        <strong>${c.id}</strong> — ${c.sektor}<br>
+        ${c.nama}<br>
+        <small>${c.ts}</small>
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
 
   html+=`<h3>Belum Input (${belum.length} mesin)</h3>`;
   html+=`<div class="week-grid">`+
-      chunk(belum).map(col=>`
-        <div class="monthly-card belum">
-          ${col.map(c=>`
-            <div class="item">
-              <strong>${c.id}</strong> — ${c.sektor}<br>
-              ${c.nama}
-              <span class="tooltip">Belum input</span>
-            </div>`).join("")}
-        </div>`).join("")
-    +`</div>`;
+  chunk(belum).map(col=>`
+    <div class="monthly-card belum">
+      ${col.map(c=>`
+      <div class="item">
+        <strong>${c.id}</strong> — ${c.sektor}<br>
+        ${c.nama}
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
 
-  dataDisplay.innerHTML = html;
+  dataDisplay.innerHTML=html;
 }
 
-/* ------ Buttons ------ */
-btnMonthly.addEventListener("click", async ()=>{
+btnMonthly.addEventListener("click",async()=>{
   resetMainButtons();
   btnMonthly.classList.add("active");
   weekButtons.style.display="none";
-
-  dataDisplay.innerHTML = "<div class='card'>Loading monthly data…</div>";
-
-  masterMonthly = await loadCSV(MASTER_MONTHLY_CSV);
-  monthlyRows = await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
-
+  dataDisplay.innerHTML="<div class='card'>Loading monthly data…</div>";
+  masterMonthly=await loadCSV(MASTER_MONTHLY_CSV);
+  monthlyRows=await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
   renderMonthly();
 });
 
-btnWeekly.addEventListener("click", async ()=>{
+btnWeekly.addEventListener("click",async()=>{
   resetMainButtons();
   btnWeekly.classList.add("active");
   weekButtons.style.display="flex";
   dataDisplay.innerHTML="<div class='card'>Loading weekly data…</div>";
-
   resetWeekButtons();
-  if(masterWeekly.length===0 || weeklyRows.length===0) await loadAll();
-
+  if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
   dataDisplay.innerHTML="<div class='card'>Pilih week untuk melihat data</div>";
 });
 
 weekBtns.forEach(b=>{
-  b.addEventListener("click", async ()=>{
+  b.addEventListener("click",async()=>{
     resetWeekButtons();
     b.classList.add("active");
-    dataDisplay.innerHTML="<div class='card'>Loading week "+b.dataset.week+"…</div>";
-
-    if(masterWeekly.length===0 || weeklyRows.length===0) await loadAll();
-
+    dataDisplay.innerHTML=`<div class='card'>Loading week ${b.dataset.week}…</div>`;
+    if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
     renderWeekly(b.dataset.week);
   });
 });
 
-btnRefresh.addEventListener("click", async ()=>{
+btnRefresh.addEventListener("click",async()=>{
   resetMainButtons();
   btnRefresh.classList.add("active");
   dataDisplay.innerHTML="<div class='card'>Refresh…</div>";
@@ -508,10 +504,11 @@ btnRefresh.addEventListener("click", async ()=>{
   dataDisplay.innerHTML="<div class='card'>Data terbaru sudah dimuat.</div>";
 });
 
-/* ==================== INITIAL LOAD ==================== */
+/* -------------------------------------------------------
+   LOADING SEQUENCE
+------------------------------------------------------- */
 loadAll();
 
-/* ==================== LOADER + PHOTO SEQUENCE ==================== */
 setTimeout(()=>{
   document.getElementById("loaderScreen").style.display="none";
   document.getElementById("photoScreen").style.display="flex";
@@ -522,7 +519,8 @@ setTimeout(()=>{
     document.body.style.overflow="auto";
   }, 5000);
 
-}, 3000);
+}, 3500);
+
 </script>
 
 </body>
