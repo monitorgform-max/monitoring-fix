@@ -183,7 +183,7 @@ header {
   align-self:center;
   margin-left:5px;
   font-weight:bold;
-  font-size:14px;
+  font-size:20px;
   background: linear-gradient(90deg,#f0f,#0ff,#0f0,#ff0,#f00);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -209,6 +209,7 @@ header {
   background:#0d0d14;
   z-index:998;
 }
+.week-btn { padding:6px 12px; border:none; border-radius:6px; background:#666; color:white; cursor:pointer; font-weight:bold; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .week-btn.active { background:red; }
 .week-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
 /* -------------------------------------------------------
@@ -328,7 +329,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const letters = "01";
+const letters = "EL";
 const fontSize = 18;
 const columns = canvas.width / fontSize;
 const drops = Array(Math.floor(columns)).fill(1);
@@ -345,9 +346,10 @@ function drawMatrix() {
 
     if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
     drops[i]++;
+     drops[i] += 0.5;
   }
 }
-setInterval(drawMatrix, 60);
+setInterval(drawMatrix, 80);
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -555,6 +557,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
