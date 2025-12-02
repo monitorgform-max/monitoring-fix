@@ -335,20 +335,31 @@ const columns = canvas.width / fontSize;
 const drops = Array(Math.floor(columns)).fill(1);
 
 function drawMatrix() {
+  // MATIKAN SHADOW buat background biar gak glow
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
+
+  // Background trail
   ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Style teks
   ctx.fillStyle = "#0f0";
   ctx.font = fontSize + "px monospace";
-  ctx.shadowColor = "#0f0";
-  ctx.shadowBlur = 12;
 
-  for (let i=0;i<drops.length;i++){
-    const text = letters.charAt(Math.floor(Math.random()*letters.length));
-    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+  // AKTIFKAN SHADOW untuk teks saja
+  ctx.shadowColor = "#00ff00";
+  ctx.shadowBlur = 28;
 
-    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
-    drops[i]++;
-     drops[i] += 0.5;
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i] += 0.5; // kecepatan turun (pelan)
   }
 }
 setInterval(drawMatrix, 80);
@@ -405,7 +416,7 @@ function renderWeekly(weekNumber){
     else belumList.push(m);
   });
 
-  function chunkInto(arr,n=4){
+  function chunkInto(arr,n=7){
     const out=Array.from({length:n},()=>[]);
     let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
     for(let i=0;i<n;i++){
@@ -463,7 +474,7 @@ function renderMonthly(){
     } else belum.push({id,nama,sektor});
   });
 
-  function chunk(arr,n=4){
+  function chunk(arr,n=7){
     const out=Array.from({length:n},()=>[]);
     let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
     for(let i=0;i<n;i++){
@@ -559,6 +570,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
