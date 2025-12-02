@@ -332,8 +332,8 @@ function resizeCanvas() {
   canvas.height = window.innerHeight;
 }
 const letters = "EL";
-const fontSize = 20; // lebih besar biar jelas
-const columns = Math.floor(canvas.width / fontSize * 0.7); // horizontal spacing lebih lega
+const fontSize = 32; // lebih besar biar jelas
+const columns = Math.floor(canvas.width / fontSize ); // horizontal spacing lebih lega
 const drops = Array(columns).fill(0).map(() => Math.random() * 15); // vertical random start
 let hue = 0;
 
@@ -378,7 +378,7 @@ function drawMatrix() {
   }
 }
 
-setInterval(drawMatrix, 60);
+setInterval(drawMatrix, 90);
 
 // Resize handling
 window.addEventListener("resize", () => {
@@ -593,6 +593,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
