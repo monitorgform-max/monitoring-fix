@@ -321,7 +321,7 @@ header {
 
 <script>
 /* -------------------------------------------------------
-   MATRIX ANIMATION - RGB NEON E&L INTENSE
+   MATRIX ANIMATION - CINEMATIC MULTI-LAYER NEON E&L
 ------------------------------------------------------- */
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
@@ -329,49 +329,53 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const letters = "EL";       // huruf E & L
+const letters = "EL";
 const fontSize = 18;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(1);
-
-// RGB shift state
 let hue = 0;
 
 function drawMatrix() {
-  // Background gelap tipis → bikin trail
-  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  // 1. Background trail gelap tipis (tanpa shadow)
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Update warna neon shifting
-  hue += 1; // bertambah tiap frame
-  if (hue > 360) hue = 0;
-  const color = `hsl(${hue}, 100%, 50%)`;
-
-  // Style teks neon intense
-  ctx.fillStyle = color;
-  ctx.font = fontSize + "px monospace";
-  ctx.shadowColor = color;
-  ctx.shadowBlur = 35;         // glow lebih intense
-
+  // 2. Update warna huruf RGB neon
+  hue = (hue + 1) % 360;
+  const color = `hsl(${hue},100%,50%)`;
+  
+  // 3. Layer glow huruf (multi-layer)
   for (let i = 0; i < drops.length; i++) {
     const text = letters.charAt(Math.floor(Math.random() * letters.length));
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    const x = i * fontSize;
+    const y = drops[i] * fontSize;
+
+    // Layer tipis glow
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 6;
+    ctx.fillText(text, x, y);
+
+    // Layer medium glow
+    ctx.shadowBlur = 14;
+    ctx.fillText(text, x, y);
+
+    // Layer tebal glow
+    ctx.shadowBlur = 28;
+    ctx.fillText(text, x, y);
 
     // Reset drop ke atas kalau sudah habis
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = 0;
-    }
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
 
-    // Kecepatan turun (pelan)
+    // Turun pelan
     drops[i] += 0.4;
   }
 }
 
-// Interval animasi
 setInterval(drawMatrix, 60);
 
-// Resize otomatis kalau window diubah
-window.addEventListener("resize", ()=>{
+window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
@@ -583,6 +587,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
