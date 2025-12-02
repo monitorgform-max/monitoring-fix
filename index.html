@@ -183,7 +183,7 @@ header {
   align-self:center;
   margin-left:5px;
   font-weight:bold;
-  font-size:20px;
+  font-size:14px;
   background: linear-gradient(90deg,#f0f,#0ff,#0f0,#ff0,#f00);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
@@ -245,8 +245,8 @@ header {
 /* grid */
 .week-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
 }
 
 /* item */
@@ -339,6 +339,8 @@ function drawMatrix() {
   ctx.fillRect(0,0,canvas.width,canvas.height);
   ctx.fillStyle = "#0f0";
   ctx.font = fontSize + "px monospace";
+  ctx.shadowColor = "#0f0";
+  ctx.shadowBlur = 12;
 
   for (let i=0;i<drops.length;i++){
     const text = letters.charAt(Math.floor(Math.random()*letters.length));
@@ -557,6 +559,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
