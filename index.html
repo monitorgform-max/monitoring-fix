@@ -209,7 +209,8 @@ header {
   background:#0d0d14;
   z-index:998;
 }
-
+.btn.active { background:red; }
+.btn:hover { transform:scale(1.08); }
 /* -------------------------------------------------------
    DISPLAY & CARDS - GRADIENT PASTEL & GLOW PER TIPE
 ------------------------------------------------------- */
@@ -225,12 +226,12 @@ header {
 
 /* sudah input - gradient pastel hijau/blue */
 .card.sudah, .monthly-card.sudah {
-  background: linear-gradient(135deg, #d0f0c0, #a0e8af);
+  background: linear-gradient(135deg, #d4edda, #a0e8af);
 }
 
 /* belum input - gradient pastel kuning/orange */
 .card.belum, .monthly-card.belum {
-  background: linear-gradient(135deg, #fffacd, #ffe4b3);
+  background: linear-gradient(135deg, #f8d7da, #ffe4b3);
 }
 
 /* hover efek mewah untuk semua */
@@ -322,7 +323,7 @@ header {
    MATRIX ANIMATION
 ------------------------------------------------------- */
 const canvas = document.getElementById("matrixCanvas");
-const ctx = canvas.getContext("3d");
+const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -346,7 +347,7 @@ function drawMatrix() {
     drops[i]++;
   }
 }
-setInterval(drawMatrix, 40);
+setInterval(drawMatrix, 20);
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -554,6 +555,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
