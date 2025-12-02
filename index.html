@@ -326,11 +326,7 @@ header {
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
 
-// Set canvas fullscreen awal
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
+
 const letters = "EL";
 const fontSize = 24; // lebih besar biar jelas
 const columns = Math.floor(canvas.width / fontSize ); // horizontal spacing lebih lega
@@ -372,9 +368,7 @@ function drawMatrix() {
     drops[i] += 0.4 + Math.random() * 0.3; // variasi kecepatan tiap huruf
 
     // Reset ke atas dengan posisi acak
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-      drops[i] = Math.random() * 10;
-    }
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
   }
 }
 
@@ -593,6 +587,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
