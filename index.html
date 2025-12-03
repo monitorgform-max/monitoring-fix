@@ -330,7 +330,7 @@ const ctx = canvas.getContext("2d");
 const letters = "EL";
 const fontSize = 20; // lebih besar biar jelas
 const columns = Math.floor(canvas.width / fontSize ); // horizontal spacing lebih lega
-const drops = Array(columns).fill(0).map(() => Math.random() * 15); // vertical random start
+const drops = Array(columns).fill(1);
 let hue = 0;
 
 function drawMatrix() {
@@ -581,6 +581,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
