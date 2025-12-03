@@ -373,7 +373,10 @@ function drawMatrix() {
 }
 
 setInterval(drawMatrix, 80);
-
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
@@ -581,6 +584,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
