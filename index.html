@@ -193,7 +193,17 @@ header {
   0% {filter:hue-rotate(0deg);}
   100% {filter:hue-rotate(360deg);}
 }
+.clock-time{
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 6px #0ff;
+}
 
+.clock-date{
+  font-size: 11px;
+  color: #fff;
+  opacity: 0.85;
+}
 /* -------------------------------------------------------
    WEEK BUTTONS
 ------------------------------------------------------- */
@@ -274,33 +284,8 @@ header {
   z-index: 1; /* di bawah header dan button */
 }
 
-   /* -------------------------------------------------------
-   CLOCK CARD
-------------------------------------------------------- */
-#clockText{
-  align-self:center;
-  margin-left:5px;
-  font-weight:bold;
-  font-size:14px;
-  background: rgba(0,0,0,0.6);
-  box-shadow: 0 0 6px rgba(0,255,255,0.6);
-  text-align: center;
-  line-height: 1.15;
-  pointer-events: none; /* 🔥 WAJIB */
-}
 
 
-.clock-time{
-  font-size: 18px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 6px #0ff;
-}
-
-.clock-date{
-  font-size: 11px;
-  color: #fff;
-  opacity: 0.85;
-}
 
 /* -------------------------------------------------------
    MATRIX FX SCRIPT AREA
@@ -334,7 +319,6 @@ header {
     <button class="btn" id="btnMonthly">Monthly</button>
     <button class="btn" id="btnRefresh">Refresh</button>
     <div class="by-el">by EL</div>
-    <div id="clockText">
     <div class="clock-time" id="clockTime">00 : 00 : 00</div>
     <div class="clock-date" id="clockDate">Senin, 1 Januari 2025</div>
   </div>
@@ -652,6 +636,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
