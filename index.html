@@ -279,18 +279,19 @@ header {
 ------------------------------------------------------- */
 #clockCard{
   position: fixed;
-  top: 60px;                 /* 🔥 SAMA dengan button-row */
+  top: 60px;
   left: 50%;
   transform: translateX(-50%);
   padding: 6px 14px;
+  width: fit-content;
   border-radius: 10px;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(6px);
   box-shadow: 0 0 12px rgba(0,255,255,0.6);
   text-align: center;
   line-height: 1.15;
-  z-index: 1001;             /* di atas button */
-  pointer-events: none;
+  z-index: 998;
+  pointer-events: none; /* 🔥 WAJIB */
 }
 
 
@@ -656,6 +657,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
