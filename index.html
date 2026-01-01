@@ -200,8 +200,9 @@ header {
 }
 
 .clock-date{
-  font-size: 11px;
+  font-size: 18px;
   color: #fff;
+  text-shadow: 0 0 6px #0ff;
   opacity: 0.85;
 }
 /* -------------------------------------------------------
@@ -283,6 +284,10 @@ header {
   position: relative; /* agar z-index bisa berfungsi */
   z-index: 1; /* di bawah header dan button */
 }
+#dataDisplay h3,
+#dataDisplay .card {
+  margin-top: 8px !important;
+}
 
 
 
@@ -345,8 +350,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const letters = "EL";
-const fontSize = 18;
+const letters = "E L";
+const fontSize = 20;
 const columns = Math.floor(canvas.width / fontSize);
 const drops = Array(columns).fill(1);
 let hue = 0;
@@ -445,15 +450,15 @@ const dataDisplay=document.getElementById("dataDisplay");
 function resetMainButtons(){[btnWeekly,btnMonthly,btnRefresh].forEach(b=>b.classList.remove("active"));}
 function resetWeekButtons(){weekBtns.forEach(b=>b.classList.remove("active"));}
 
-/* === URL === */
+/* === URL ganti weekly sheet id dan monthly form url=== */
 const MASTER_WEEKLY_CSV="Data Mesin.csv";
 const MASTER_MONTHLY_CSV="Data Mesin Monthly.csv";
 
-const WEEKLY_SHEET_ID = "1lhRlY4P7Zj0XOeMDtBMBv_JAC56E_gXa5zoj3VDP90w";
+const WEEKLY_SHEET_ID = "1vu_dfnpIwRRPQHwpLTHZYadle6wIt1g2eBqRz2dVjPI";
 const WEEKLY_SHEET_NAME = "Form Responses 1";
 const WEEKLY_SHEET_URL = `https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
 
-const MONTHLY_FORM_URL = "https://opensheet.elk.sh/1HOZ9WXSxr2W-iiaaM2ysYfMwiIIS48tH6UPm-o0d4vY/Form%20Responses%201";
+const MONTHLY_FORM_URL = "https://opensheet.elk.sh/1otuxQaIYR57_01gXZkhngJkZ9HoIJRW08GyIfU2g7zg/Form%20Responses%201";
 
 /* === DATA === */
 let weeklyRows=[], monthlyRows=[], masterWeekly=[], masterMonthly=[];
@@ -636,6 +641,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
