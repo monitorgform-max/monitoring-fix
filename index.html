@@ -268,7 +268,7 @@ header {
    
 /* pastikan wrap dataDisplay scrollable tapi tetap di bawah header */
 .wrap {
-  padding-top: 150px; /* header + button-row + week-row total tinggi */
+  padding-top: 145px; /* header + button-row + week-row total tinggi */
   padding-left: 16px;
   padding-right: 16px;
   display: none;
@@ -277,9 +277,9 @@ header {
 /* tetap scrollable */
 #dataDisplay {
   overflow-y: auto;
-  max-height: calc(100vh - 150px); /* sesuaikan sama padding-top */
+  height: calc(100vh - 145px); /* sesuaikan sama padding-top */
   margin-top: 0; /* hapus margin-top lama */
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   position: relative; /* agar z-index bisa berfungsi */
   z-index: 1; /* di bawah header dan button */
 }
@@ -639,6 +639,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
