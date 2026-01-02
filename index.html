@@ -202,6 +202,9 @@ header {
 .clock-date{
   font-size: 18px;
   background: linear-gradient(90deg,#f0f,#0ff,#0f0,#ff0,#f00);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation: rgbMove 2s infinite linear;
   text-shadow: 0 0 6px #0ff;
   opacity: 0.85;
 }
@@ -641,6 +644,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
