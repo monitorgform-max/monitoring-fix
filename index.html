@@ -291,7 +291,50 @@ header {
 #dataDisplay .card {
   margin-top: 8px !important;
 }
+#dataDisplay {
+  scroll-behavior: smooth;
+}
+#dataDisplay::-webkit-scrollbar {
+  width: 6px;
+}
+#dataDisplay::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,#0ff,#00f);
+  border-radius: 6px;
+}
+#dataDisplay::-webkit-scrollbar-track {
+  background: transparent;
+}
+#dataDisplay::-webkit-scrollbar {
+  width: 6px;
+}
+#dataDisplay::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,#0ff,#00f);
+  border-radius: 6px;
+}
+#dataDisplay::-webkit-scrollbar-track {
+  background: transparent;
+}
 
+/* fade + glow effect untuk konten #dataDisplay */
+#dataDisplay {
+  transition: opacity 0.5s ease, box-shadow 0.5s ease;
+  opacity: 1;
+  position: relative;
+}
+
+.card, .monthly-card {
+  opacity: 0; /* default hidden sebelum muncul */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: opacity 0.6s ease, box-shadow 0.6s ease, transform 0.4s ease;
+  transform: translateY(10px);
+}
+
+/* kelas aktif untuk animasi */
+.card.show, .monthly-card.show {
+  opacity: 1;
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(0,255,255,0.35), 0 0 15px rgba(0,255,255,0.6);
+}
 
 
 
@@ -437,7 +480,24 @@ function updateClock(){
 
 setInterval(updateClock,1000);
 updateClock();
-   
+  async function displayWithEffect(newContent) {
+  // fade out dulu
+  dataDisplay.style.opacity = 0;
+  await new Promise(r => setTimeout(r, 250)); // tunggu setengah detik
+
+  // update konten
+  dataDisplay.innerHTML = newContent;
+
+  // pilih semua card yg baru muncul
+  const cards = dataDisplay.querySelectorAll(".card, .monthly-card");
+  cards.forEach(c => {
+    setTimeout(() => c.classList.add("show"), 50); // kasih delay tipis biar stagger effect
+  });
+
+  // fade in wrapper
+  dataDisplay.style.opacity = 1;
+}
+ 
 /* -------------------------------------------------------
    ORIGINAL SCRIPT TIDAK DIUBAH
 ------------------------------------------------------- */
@@ -589,7 +649,7 @@ btnMonthly.addEventListener("click",async()=>{
   resetMainButtons();
   btnMonthly.classList.add("active");
   weekButtons.style.display="none";
-  dataDisplay.innerHTML="<div class='card'>Loading monthly data…</div>";
+  await displayWithEffect("<div class='card'>Loading monthly data…</div>");
   masterMonthly=await loadCSV(MASTER_MONTHLY_CSV);
   monthlyRows=await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
   renderMonthly();
@@ -599,17 +659,17 @@ btnWeekly.addEventListener("click",async()=>{
   resetMainButtons();
   btnWeekly.classList.add("active");
   weekButtons.style.display="flex";
-  dataDisplay.innerHTML="<div class='card'>Loading weekly data…</div>";
+  await displayWithEffect("<div class='card'>Loading weekly data…</div>");
   resetWeekButtons();
   if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
-  dataDisplay.innerHTML="<div class='card'>Pilih week untuk melihat data</div>";
+  await displayWithEffect("<div class='card'>Pilih week untuk melihat data</div>");
 });
 
 weekBtns.forEach(b=>{
   b.addEventListener("click",async()=>{
     resetWeekButtons();
     b.classList.add("active");
-    dataDisplay.innerHTML=`<div class='card'>Loading week ${b.dataset.week}…</div>`;
+    await displayWithEffect(`<div class='card'>Loading week ${b.dataset.week}…</div>`);
     if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
     renderWeekly(b.dataset.week);
   });
@@ -618,9 +678,9 @@ weekBtns.forEach(b=>{
 btnRefresh.addEventListener("click",async()=>{
   resetMainButtons();
   btnRefresh.classList.add("active");
-  dataDisplay.innerHTML="<div class='card'>Refresh…</div>";
+  await displayWithEffect("<div class='card'>Refresh…</div>");
   await loadAll();
-  dataDisplay.innerHTML="<div class='card'>Data terbaru sudah dimuat.</div>";
+  await displayWithEffect("<div class='card'>Data terbaru sudah dimuat.</div>");
 });
 
 /* -------------------------------------------------------
@@ -644,6 +704,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
