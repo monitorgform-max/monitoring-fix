@@ -323,18 +323,17 @@ header {
 }
 
 .card, .monthly-card {
-  opacity: 0; /* default hidden sebelum muncul */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: opacity 0.6s ease, box-shadow 0.6s ease, transform 0.4s ease;
+  opacity: 0;
   transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease;
 }
 
-/* kelas aktif untuk animasi */
 .card.show, .monthly-card.show {
   opacity: 1;
   transform: translateY(0);
   box-shadow: 0 6px 20px rgba(0,255,255,0.35), 0 0 15px rgba(0,255,255,0.6);
 }
+
 
 
 
@@ -480,22 +479,7 @@ function updateClock(){
 
 setInterval(updateClock,1000);
 updateClock();
-  async function displayWithEffect(newContent) {
-  // fade out dulu
-  dataDisplay.style.opacity = 0;
-  await new Promise(r => setTimeout(r, 250)); // tunggu setengah detik
-
-  // update konten
-  dataDisplay.innerHTML = newContent;
-
-  // pilih semua card yg baru muncul
-  const cards = dataDisplay.querySelectorAll(".card, .monthly-card");
-  cards.forEach(c => {
-    setTimeout(() => c.classList.add("show"), 50); // kasih delay tipis biar stagger effect
-  });
-
-  // fade in wrapper
-  dataDisplay.style.opacity = 1;
+  
 }
  
 /* -------------------------------------------------------
@@ -682,6 +666,21 @@ btnRefresh.addEventListener("click",async()=>{
   await loadAll();
   await displayWithEffect("<div class='card'>Data terbaru sudah dimuat.</div>");
 });
+async function displayWithEffect(newContent) {
+  // fade out wrapper
+  dataDisplay.style.opacity = 0;
+  await new Promise(r => setTimeout(r, 250)); // tunggu fade out
+
+  // update konten
+  dataDisplay.innerHTML = newContent;
+
+  // delay sedikit biar DOM baru di-render
+  setTimeout(() => {
+    const cards = dataDisplay.querySelectorAll(".card, .monthly-card");
+    cards.forEach(c => c.classList.add("show"));
+    dataDisplay.style.opacity = 1; // fade in wrapper
+  }, 50);
+}
 
 /* -------------------------------------------------------
    LOADING SEQUENCE
@@ -704,6 +703,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
