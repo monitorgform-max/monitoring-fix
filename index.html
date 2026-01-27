@@ -322,11 +322,12 @@ header {
   position: relative;
 }
 
-.card, .monthly-card {
+.card:not(.show),
+.monthly-card:not(.show) {
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.4s ease, box-shadow 0.6s ease;
 }
+
 
 .card.show, .monthly-card.show {
   opacity: 1;
@@ -706,6 +707,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
