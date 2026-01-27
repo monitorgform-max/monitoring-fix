@@ -626,6 +626,10 @@ function renderMonthly(){
     </div>`).join("")+`</div>`;
 
   dataDisplay.innerHTML=html;
+   setTimeout(()=>{
+  dataDisplay.querySelectorAll(".card")
+    .forEach(c => c.classList.add("show"));
+}, 30);
 }
 
 btnMonthly.addEventListener("click",async()=>{
@@ -702,6 +706,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
