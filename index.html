@@ -576,27 +576,51 @@ function renderWeekly(weekNumber){
 
   dataDisplay.innerHTML=html;
 }
-   function renderRekap(){
+   // render rekap
+  function renderRekap(){
 
-  const sudahSet = new Set();
-
-  // kumpulin semua ID yg pernah submit di week manapun
-  weeklyRows.forEach(r=>{
-    const id = safe(r["ID Mesin"]);
-    if(id) sudahSet.add(id);
-  });
-
-  const sudahList=[], belumList=[];
+  // ===== 1. bikin UNIQUE MASTER (hapus duplikat week) =====
+  const uniqueMasterMap = new Map();
 
   masterWeekly.forEach(m=>{
-    const id=safe(m["ID Mesin"]);
-    if(sudahSet.has(id)){
-      sudahList.push(m);
-    } else {
-      belumList.push(m);
+    const id = safe(m["ID Mesin"])
+      .toUpperCase()
+      .replace(/\s+/g,'');
+
+    // simpan cuma 1x per ID
+    if(!uniqueMasterMap.has(id)){
+      uniqueMasterMap.set(id, m);
     }
   });
 
+  const uniqueMaster = [...uniqueMasterMap.values()]; // <- cuma 186
+
+
+  // ===== 2. kumpulin ID yg pernah submit =====
+  const sudahSet = new Set();
+
+  weeklyRows.forEach(r=>{
+    const id = safe(r["ID Mesin"])
+      .toUpperCase()
+      .replace(/\s+/g,'');
+    if(id) sudahSet.add(id);
+  });
+
+
+  // ===== 3. pisahin =====
+  const sudahList=[], belumList=[];
+
+  uniqueMaster.forEach(m=>{
+    const id = safe(m["ID Mesin"])
+      .toUpperCase()
+      .replace(/\s+/g,'');
+
+    if(sudahSet.has(id)) sudahList.push(m);
+    else belumList.push(m);
+  });
+
+
+  // ===== 4. render =====
   function chunkInto(arr,n=7){
     const out=Array.from({length:n},()=>[]);
     let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
@@ -634,6 +658,7 @@ function renderWeekly(weekNumber){
 
   dataDisplay.innerHTML=html;
 }
+
 
 
 /* === RENDER MONTHLY === */
@@ -778,6 +803,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
