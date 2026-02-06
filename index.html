@@ -379,6 +379,7 @@ header {
     <button class="week-btn" data-week="2">W2</button>
     <button class="week-btn" data-week="3">W3</button>
     <button class="week-btn" data-week="4">W4</button>
+    <button class="week-btn" id="btnRekap">REKAP</button>
   </div>
 
   <div id="dataDisplay"></div>
@@ -492,6 +493,7 @@ const btnMonthly=document.getElementById("btnMonthly");
 const btnRefresh=document.getElementById("btnRefresh");
 const weekButtons=document.getElementById("weekButtons");
 const weekBtns=document.querySelectorAll(".week-btn");
+const btnRekap=document.getElementById("btnRekap");
 const dataDisplay=document.getElementById("dataDisplay");
 
 function resetMainButtons(){[btnWeekly,btnMonthly,btnRefresh].forEach(b=>b.classList.remove("active"));}
@@ -574,6 +576,65 @@ function renderWeekly(weekNumber){
 
   dataDisplay.innerHTML=html;
 }
+   function renderRekap(){
+
+  const sudahSet = new Set();
+
+  // kumpulin semua ID yg pernah submit di week manapun
+  weeklyRows.forEach(r=>{
+    const id = safe(r["ID Mesin"]);
+    if(id) sudahSet.add(id);
+  });
+
+  const sudahList=[], belumList=[];
+
+  masterWeekly.forEach(m=>{
+    const id=safe(m["ID Mesin"]);
+    if(sudahSet.has(id)){
+      sudahList.push(m);
+    } else {
+      belumList.push(m);
+    }
+  });
+
+  function chunkInto(arr,n=7){
+    const out=Array.from({length:n},()=>[]);
+    let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
+    for(let i=0;i<n;i++){
+      const size=base+(i<rem?1:0);
+      out[i]=arr.slice(idx,idx+size);
+      idx+=size;
+    }
+    return out;
+  }
+
+  let html=`<h3>Sudah Input (${sudahList.length} mesin)</h3>`;
+
+  html+=`<div class="week-grid">`+
+  chunkInto(sudahList).map(col=>`
+    <div class="card sudah">
+      ${col.map(m=>`
+      <div class="item">
+        <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
+        ${safe(m["Nama Lokasi"])}
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
+
+  html+=`<h3>Belum Input (${belumList.length} mesin)</h3>`;
+
+  html+=`<div class="week-grid">`+
+  chunkInto(belumList).map(col=>`
+    <div class="card belum">
+      ${col.map(m=>`
+      <div class="item">
+        <strong>${safe(m["ID Mesin"])}</strong> — ${safe(m.SEKTOR)}<br>
+        ${safe(m["Nama Lokasi"])}
+      </div>`).join("")}
+    </div>`).join("")+`</div>`;
+
+  dataDisplay.innerHTML=html;
+}
+
 
 /* === RENDER MONTHLY === */
 function renderMonthly(){
@@ -662,6 +723,16 @@ weekBtns.forEach(b=>{
     renderWeekly(b.dataset.week);
   });
 });
+btnRekap.addEventListener("click",async()=>{
+  resetWeekButtons();
+  btnRekap.classList.add("active");
+
+  await displayWithEffect("<div class='card'>Loading rekap data…</div>");
+
+  if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
+
+  renderRekap();
+});
 
 btnRefresh.addEventListener("click",async()=>{
   resetMainButtons();
@@ -707,6 +778,7 @@ setTimeout(()=>{
 
 </body>
 </html>
+
 
 
 
