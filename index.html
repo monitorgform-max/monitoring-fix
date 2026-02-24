@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MONITORING GFORM</title>
 
-<!-- Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -178,6 +177,17 @@ header {
 .btn.active { background:red; }
 .btn:hover { transform:scale(1.08); }
 
+/* --- TOMBOL EXCEL BARU BY EL --- */
+#btnExportExcel {
+  background-color: #217346; /* Hijau Excel */
+  box-shadow: 0 0 5px #217346;
+}
+#btnExportExcel:hover {
+  background-color: #2e965d;
+  box-shadow: 0 0 15px #ffeb3b; /* Nyala kuning pas di-hover */
+  transform: translateY(-2px) scale(1.05);
+}
+
 /* by EL neon rgb */
 .by-el {
   align-self:center;
@@ -226,136 +236,82 @@ header {
 .week-btn { padding:6px 12px; border:none; border-radius:6px; background:#666; color:white; cursor:pointer; font-weight:bold; transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .week-btn.active { background:red; }
 .week-btn:hover { transform: translateY(-2px) scale(1.08); box-shadow:0 4px 12px rgba(0,0,0,0.15); }
+
 /* -------------------------------------------------------
-   DISPLAY & CARDS - GRADIENT PASTEL & GLOW PER TIPE
+   DISPLAY & CARDS
 ------------------------------------------------------- */
 .card, .monthly-card {
   border-radius: 8px;
   padding: 6px;
   margin-bottom: 10px;
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-  color: #000; /* teks hitam */
+  color: #000;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  background: linear-gradient(135deg, #fdf6e3, #e0f7fa); /* default gradient */
+  background: linear-gradient(135deg, #fdf6e3, #e0f7fa);
 }
+.card.sudah, .monthly-card.sudah { background: linear-gradient(135deg, #d4edda, #a0e8af); }
+.card.belum, .monthly-card.belum { background: linear-gradient(135deg, #f8d7da, #ffe4b3); }
 
-/* sudah input - gradient pastel hijau/blue */
-.card.sudah, .monthly-card.sudah {
-  background: linear-gradient(135deg, #d4edda, #a0e8af);
-}
-
-/* belum input - gradient pastel kuning/orange */
-.card.belum, .monthly-card.belum {
-  background: linear-gradient(135deg, #f8d7da, #ffe4b3);
-}
-
-/* hover efek mewah untuk semua */
 .card:hover, .monthly-card:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 6px 20px rgba(0,0,0,0.35), 0 0 15px rgba(255,255,255,0.6);
   filter: brightness(1.05);
 }
 
-/* grid */
 .week-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 10px;
 }
 
-/* item */
 .item {
   border-bottom: 1px solid rgba(0,0,0,0.15);
   padding: 6px 8px;
   font-size: 12px;
 }
    
-/* pastikan wrap dataDisplay scrollable tapi tetap di bawah header */
 .wrap {
-  padding-top: 140px; /* header + button-row + week-row total tinggi */
+  padding-top: 140px;
   padding-left: 16px;
   padding-right: 16px;
   display: none;
 }
 
-/* tetap scrollable */
 #dataDisplay {
   overflow-y: auto;
-  height: calc(100vh - 140px); /* sesuaikan sama padding-top */
-  margin-top: 0; /* hapus margin-top lama */
+  height: calc(100vh - 140px);
+  margin-top: 0;
   padding-bottom: 20px;
-  position: relative; /* agar z-index bisa berfungsi */
-  z-index: 1; /* di bawah header dan button */
-}
-#dataDisplay h3,
-#dataDisplay .card {
-  margin-top: 8px !important;
-}
-#dataDisplay {
+  position: relative;
+  z-index: 1;
   scroll-behavior: smooth;
-}
-#dataDisplay::-webkit-scrollbar {
-  width: 6px;
-}
-#dataDisplay::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg,#0ff,#00f);
-  border-radius: 6px;
-}
-#dataDisplay::-webkit-scrollbar-track {
-  background: transparent;
-}
-#dataDisplay::-webkit-scrollbar {
-  width: 6px;
-}
-#dataDisplay::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg,#0ff,#00f);
-  border-radius: 6px;
-}
-#dataDisplay::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* fade + glow effect untuk konten #dataDisplay */
-#dataDisplay {
   transition: opacity 0.5s ease, box-shadow 0.5s ease;
   opacity: 1;
-  position: relative;
 }
 
-/* .card:not(.show),
-.monthly-card:not(.show) {
-  opacity: 0;
-  transform: translateY(10px);
-} */
+#dataDisplay h3, #dataDisplay .card { margin-top: 8px !important; }
 
+#dataDisplay::-webkit-scrollbar { width: 6px; }
+#dataDisplay::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#0ff,#00f); border-radius: 6px; }
+#dataDisplay::-webkit-scrollbar-track { background: transparent; }
 
 .card.show, .monthly-card.show {
   opacity: 1;
   transform: translateY(0);
   box-shadow: 0 6px 20px rgba(0,255,255,0.35), 0 0 15px rgba(0,255,255,0.6);
 }
-
-
-
-
-/* -------------------------------------------------------
-   MATRIX FX SCRIPT AREA
-------------------------------------------------------- */
 </style>
 </head>
 <body>
 
-<!-- MATRIX BACKGROUND -->
 <canvas id="matrixCanvas"></canvas>
 
-<!-- LOADER -->
 <div id="loaderScreen">
   <div class="spinner"></div>
   <div class="cyber-text glitch">LOADING... PLEASE WAIT...!!</div>
   <div class="cyber-sub">Alloh bersama orang-orang yang sabar</div>
 </div>
 
-<!-- PHOTO SCREEN -->
 <div id="photoScreen">
   <img src="https://raw.githubusercontent.com/monitorgform-max/monitoring-fix/main/upscalemedia-transformed.jpeg">
   <div class="cyber-title glitch">UG ARTA BATAM</div>
@@ -369,6 +325,9 @@ header {
     <button class="btn" id="btnWeekly">Weekly</button>
     <button class="btn" id="btnMonthly">Monthly</button>
     <button class="btn" id="btnRefresh">Refresh</button>
+    
+    <button class="btn" id="btnExportExcel">📥 Export Excel</button>
+    
     <div class="by-el">by EL</div>
     <div class="clock-time" id="clockTime">00 : 00 : 00</div>
     <div class="clock-date" id="clockDate">Senin, 1 Januari 2025</div>
@@ -389,7 +348,7 @@ header {
 <script>
 
 /* -------------------------------------------------------
-   MATRIX ANIMATION - CINEMATIC MULTI-LAYER NEON E&L
+   MATRIX ANIMATION
 ------------------------------------------------------- */
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
@@ -404,43 +363,33 @@ const drops = Array(columns).fill(1);
 let hue = 0;
 
 function drawMatrix() {
-  // 1. Background trail gelap tipis (tanpa shadow)
   ctx.shadowBlur = 0;
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // 2. Update warna huruf RGB neon
   hue = (hue + 1) % 360;
   const color = `hsl(${hue},100%,50%)`;
   
-  // 3. Layer glow huruf (multi-layer)
   for (let i = 0; i < drops.length; i++) {
     const text = letters.charAt(Math.floor(Math.random() * letters.length));
     const x = i * fontSize;
     const y = drops[i] * fontSize;
 
-    // Layer tipis glow
     ctx.fillStyle = color;
     ctx.shadowColor = color;
     ctx.shadowBlur = 6;
     ctx.fillText(text, x, y);
 
-    // Layer medium glow
     ctx.shadowBlur = 14;
     ctx.fillText(text, x, y);
 
-    // Layer tebal glow
     ctx.shadowBlur = 28;
     ctx.fillText(text, x, y);
 
-    // Reset drop ke atas kalau sudah habis
     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-
-    // Turun pelan
     drops[i] += 0.4;
   }
 }
-
 setInterval(drawMatrix, 60);
 
 window.addEventListener("resize", () => {
@@ -453,19 +402,12 @@ window.addEventListener("resize", () => {
 ------------------------------------------------------- */
 function updateClock(){
   const now = new Date();
-
   const time = now.toLocaleTimeString("id-ID",{
-    hour:"2-digit",
-    minute:"2-digit",
-    second:"2-digit",
-    hour12:false
+    hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false
   }).replace(/\./g," : ");
 
   const date = now.toLocaleDateString("id-ID",{
-    weekday:"long",
-    day:"numeric",
-    month:"long",
-    year:"numeric"
+    weekday:"long", day:"numeric", month:"long", year:"numeric"
   });
 
   const sec = now.getSeconds();
@@ -478,19 +420,16 @@ function updateClock(){
 
   document.getElementById("clockDate").textContent = date;
 }
-
 setInterval(updateClock,1000);
 updateClock();
   
- 
 /* -------------------------------------------------------
-   ORIGINAL SCRIPT TIDAK DIUBAH
+   APP LOGIC
 ------------------------------------------------------- */
-
-/* === STATE === */
 const btnWeekly=document.getElementById("btnWeekly");
 const btnMonthly=document.getElementById("btnMonthly");
 const btnRefresh=document.getElementById("btnRefresh");
+const btnExportExcel=document.getElementById("btnExportExcel"); // Variabel Tombol Excel
 const weekButtons=document.getElementById("weekButtons");
 const weekBtns=document.querySelectorAll(".week-btn");
 const btnRekap=document.getElementById("btnRekap");
@@ -499,29 +438,96 @@ const dataDisplay=document.getElementById("dataDisplay");
 function resetMainButtons(){[btnWeekly,btnMonthly,btnRefresh].forEach(b=>b.classList.remove("active"));}
 function resetWeekButtons(){weekBtns.forEach(b=>b.classList.remove("active"));}
 
-/* === URL ganti weekly sheet id dan monthly form url=== */
 const MASTER_WEEKLY_CSV="Data Mesin.csv";
 const MASTER_MONTHLY_CSV="Data Mesin Monthly.csv";
-
 const WEEKLY_SHEET_ID = "1-8Y3WLziC9xJ_YoEUIxPmF6pDBt2IvrxM_bJF48TL6Q";
 const WEEKLY_SHEET_NAME = "Form Responses 1";
 const WEEKLY_SHEET_URL = `https://opensheet.elk.sh/${WEEKLY_SHEET_ID}/${encodeURIComponent(WEEKLY_SHEET_NAME)}`;
-
 const MONTHLY_FORM_URL = "https://opensheet.elk.sh/1yiUS1g110aUcHvEXdvQKu86UviFn4VBGHWssAZe634k/Form%20Responses%201";
 
-/* === DATA === */
 let weeklyRows=[], monthlyRows=[], masterWeekly=[], masterMonthly=[];
 
 function safe(v){return v==null?"":String(v).trim();}
 async function loadCSV(url){return new Promise(resolve=>{Papa.parse(url,{download:true,header:true,skipEmptyLines:true,complete:r=>resolve(r.data),error:()=>resolve([])});});}
 
-/* === LOAD ALL === */
 async function loadAll(){
   masterWeekly=await loadCSV(MASTER_WEEKLY_CSV);
   masterMonthly=await loadCSV(MASTER_MONTHLY_CSV);
   weeklyRows=await fetch(WEEKLY_SHEET_URL).then(r=>r.json()).catch(()=>[]);
   monthlyRows=await fetch(MONTHLY_FORM_URL).then(r=>r.json()).catch(()=>[]);
 }
+
+/* === EXPORT TO EXCEL FUNCTION === */
+btnExportExcel.addEventListener('click', () => {
+    // 1. Ambil nama file berdasakan tampilan yang lagi aktif (Weekly/Monthly)
+    let activeView = "Data_Export";
+    if(btnWeekly.classList.contains("active")) {
+        const activeWeek = document.querySelector('.week-btn.active');
+        activeView = activeWeek ? `Data_${activeWeek.innerText}` : "Data_Weekly";
+    } else if(btnMonthly.classList.contains("active")) {
+        activeView = "Data_Monthly";
+    }
+
+    // 2. Siapkan array untuk nampung data
+    let exportData = [];
+
+    // 3. Ekstrak data dari semua elemen .item yang ada di dataDisplay
+    const items = dataDisplay.querySelectorAll('.item');
+    
+    if(items.length === 0) {
+        alert("Belum ada data yang ditampilkan buat di-export bre!");
+        return;
+    }
+
+    items.forEach(item => {
+        // Ambil elemen status (Sudah Input / Belum Input) dari kotak parent-nya
+        let status = item.closest('.sudah') ? "Sudah Input" : "Belum Input";
+
+        // Parsing Teks di dalem kotak (.item)
+        // Struktur HTML aslinya: <strong>ID</strong> — SEKTOR <br> LOKASI <br> <small>TIMESTAMP</small>
+        let rawHTML = item.innerHTML;
+        
+        // Ekstrak ID Mesin
+        let idMesin = "";
+        let idMatch = rawHTML.match(/<strong>(.*?)<\/strong>/);
+        if(idMatch) idMesin = idMatch[1].trim();
+
+        // Ekstrak Sektor
+        let sektor = "";
+        let sektorMatch = rawHTML.match(/<\/strong>\s*—\s*([^<]+)/);
+        if(sektorMatch) sektor = sektorMatch[1].trim();
+
+        // Ekstrak Lokasi (Ambil teks setelah <br> pertama)
+        let lokasi = "";
+        let splitByBr = item.innerText.split('\n'); // pakai innerText biar bersih dari tag HTML
+        if(splitByBr.length > 1) {
+             // Lokasi biasanya ada di baris kedua
+             lokasi = splitByBr[1].trim();
+        }
+
+        // Ekstrak Timestamp (Waktu Input)
+        let timestamp = "";
+        let tsMatch = rawHTML.match(/<small>(.*?)<\/small>/);
+        if(tsMatch) timestamp = tsMatch[1].trim();
+
+        // Masukin ke array data excel
+        exportData.push({
+            "Status": status,
+            "ID Mesin": idMesin,
+            "Sektor": sektor,
+            "Nama Lokasi": lokasi,
+            "Waktu Input": timestamp
+        });
+    });
+
+    // 4. Proses Convert Array JSON ke Sheet Excel (Pake library XLSX yang udah lu include)
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, activeView);
+
+    // 5. Trigger File Download
+    XLSX.writeFile(workbook, `${activeView}_UG_ARTA.xlsx`);
+});
 
 /* === RENDER WEEKLY === */
 function renderWeekly(weekNumber){
@@ -576,51 +582,31 @@ function renderWeekly(weekNumber){
 
   dataDisplay.innerHTML=html;
 }
-   // render rekap
-  function renderRekap(){
 
-  // ===== 1. bikin UNIQUE MASTER (hapus duplikat week) =====
+/* === RENDER REKAP === */
+function renderRekap(){
   const uniqueMasterMap = new Map();
-
   masterWeekly.forEach(m=>{
-    const id = safe(m["ID Mesin"])
-      .toUpperCase()
-      .replace(/\s+/g,'');
-
-    // simpan cuma 1x per ID
+    const id = safe(m["ID Mesin"]).toUpperCase().replace(/\s+/g,'');
     if(!uniqueMasterMap.has(id)){
       uniqueMasterMap.set(id, m);
     }
   });
 
-  const uniqueMaster = [...uniqueMasterMap.values()]; // <- cuma 186
-
-
-  // ===== 2. kumpulin ID yg pernah submit =====
+  const uniqueMaster = [...uniqueMasterMap.values()];
   const sudahSet = new Set();
-
   weeklyRows.forEach(r=>{
-    const id = safe(r["ID Mesin"])
-      .toUpperCase()
-      .replace(/\s+/g,'');
+    const id = safe(r["ID Mesin"]).toUpperCase().replace(/\s+/g,'');
     if(id) sudahSet.add(id);
   });
 
-
-  // ===== 3. pisahin =====
   const sudahList=[], belumList=[];
-
   uniqueMaster.forEach(m=>{
-    const id = safe(m["ID Mesin"])
-      .toUpperCase()
-      .replace(/\s+/g,'');
-
+    const id = safe(m["ID Mesin"]).toUpperCase().replace(/\s+/g,'');
     if(sudahSet.has(id)) sudahList.push(m);
     else belumList.push(m);
   });
 
-
-  // ===== 4. render =====
   function chunkInto(arr,n=7){
     const out=Array.from({length:n},()=>[]);
     let idx=0,base=Math.floor(arr.length/n),rem=arr.length%n;
@@ -633,7 +619,6 @@ function renderWeekly(weekNumber){
   }
 
   let html=`<h3>Sudah Input (${sudahList.length} mesin)</h3>`;
-
   html+=`<div class="week-grid">`+
   chunkInto(sudahList).map(col=>`
     <div class="card sudah">
@@ -645,7 +630,6 @@ function renderWeekly(weekNumber){
     </div>`).join("")+`</div>`;
 
   html+=`<h3>Belum Input (${belumList.length} mesin)</h3>`;
-
   html+=`<div class="week-grid">`+
   chunkInto(belumList).map(col=>`
     <div class="card belum">
@@ -658,8 +642,6 @@ function renderWeekly(weekNumber){
 
   dataDisplay.innerHTML=html;
 }
-
-
 
 /* === RENDER MONTHLY === */
 function renderMonthly(){
@@ -751,11 +733,8 @@ weekBtns.forEach(b=>{
 btnRekap.addEventListener("click",async()=>{
   resetWeekButtons();
   btnRekap.classList.add("active");
-
   await displayWithEffect("<div class='card'>Loading rekap data…</div>");
-
   if(masterWeekly.length===0||weeklyRows.length===0) await loadAll();
-
   renderRekap();
 });
 
@@ -766,19 +745,15 @@ btnRefresh.addEventListener("click",async()=>{
   await loadAll();
   await displayWithEffect("<div class='card'>Data terbaru sudah dimuat.</div>");
 });
+
 async function displayWithEffect(newContent) {
-  // fade out wrapper
   dataDisplay.style.opacity = 0;
-  await new Promise(r => setTimeout(r, 250)); // tunggu fade out
-
-  // update konten
+  await new Promise(r => setTimeout(r, 250));
   dataDisplay.innerHTML = newContent;
-
-  // delay sedikit biar DOM baru di-render
   setTimeout(() => {
     const cards = dataDisplay.querySelectorAll(".card, .monthly-card");
     cards.forEach(c => c.classList.add("show"));
-    dataDisplay.style.opacity = 1; // fade in wrapper
+    dataDisplay.style.opacity = 1;
   }, 50);
 }
 
@@ -800,56 +775,5 @@ setTimeout(()=>{
 }, 5000);
 
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
